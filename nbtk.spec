@@ -50,6 +50,7 @@ Group: System/Libraries
 Requires: %{libname} = %{version}-%{release}
 Requires: pkgconfig
 Requires: %{libname} >= %{version}
+Provides: %{name}-devel
 
 %description -n %{develname} 
 NBTK development libraries and header files
