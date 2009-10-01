@@ -3,7 +3,7 @@
 %define develname %mklibname %{name} -d
 
 Name: nbtk
-Summary: Experiemental toolkit for Moblin
+Summary: Experimental toolkit for Moblin
 Group: System/Libraries
 Version: 1.1.4
 License: LGPLv2.1
