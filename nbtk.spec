@@ -94,7 +94,6 @@ rm -rf %{buildroot}
 %doc NEWS README HACKING ChangeLog COPYING.LIB AUTHORS
 %{_bindir}/*
 %{_libdir}/libnbtk-1.2.so.%{major}*
-%{_libdir}/libnbtk-1.2.so
 %{_datadir}/locale/*
 %{_datadir}/nbtk/style/*
 
