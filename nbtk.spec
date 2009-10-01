@@ -17,7 +17,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: clutter-devel
 BuildRequires: libccss-devel
 BuildRequires: libglib2.0-devel
-BuildRequires: libgtk+2.0_0-devel
+BuildRequires: libgtk+2.0-devel
 BuildRequires: gir-repository
 BuildRequires: gtk-doc
 BuildRequires: gobject-introspection-devel
