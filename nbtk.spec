@@ -16,6 +16,7 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 BuildRequires: clutter-devel
 BuildRequires: libccss-devel
+BuildRequires: clutter-imcontext-devel
 BuildRequires: libglib2.0-devel
 BuildRequires: libgtk+2.0-devel
 BuildRequires: gir-repository
