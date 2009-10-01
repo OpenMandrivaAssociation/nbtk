@@ -22,7 +22,6 @@ BuildRequires: libgtk+2.0-devel
 BuildRequires: gir-repository
 BuildRequires: gtk-doc
 BuildRequires: gobject-introspection-devel
-BuildRequires: pkgconfig
 
 %description
 NBTK is a currently experimental toolkit for Moblin
