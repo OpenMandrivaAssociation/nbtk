@@ -29,6 +29,7 @@ NBTK is a currently experimental toolkit for Moblin
 %package -n %{libname}
 Summary: NBTK libraries
 Group: System/Libraries
+Requires: %{name}
 
 %description -n %{libname}
 NBTK is a currently experimental toolkit for Moblin
@@ -89,13 +90,16 @@ done
 %clean
 rm -rf %{buildroot}
 
-%files -n %{libname}
+%files
 %defattr(-,root,root,-)
 %doc NEWS README HACKING ChangeLog COPYING.LIB AUTHORS
 %{_bindir}/*
-%{_libdir}/libnbtk-1.2.so.%{major}*
 %{_datadir}/locale/*
 %{_datadir}/nbtk/style/*
+
+%files -n %{libname}
+%defattr(-,root,root,-)
+%{_libdir}/libnbtk-1.2.so.%{major}*
 
 %files -n nbtk-doc
 %defattr(-,root,root,-)
