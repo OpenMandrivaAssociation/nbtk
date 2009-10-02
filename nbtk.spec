@@ -110,6 +110,7 @@ rm -rf %{buildroot}
 %{_libdir}/libnbtk-gtk-1.2.la
 %{_libdir}/libnbtk-gtk-1.2.so
 %{_libdir}/libnbtk-1.2.la
+%{_libdir}/libnbtk-1.2.so
 
 %files -n libnbtk-gtk
 %{_libdir}/libnbtk-gtk*.so.%{major}*
