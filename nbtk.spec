@@ -8,7 +8,7 @@ Group: System/Libraries
 Version: 1.1.4
 License: LGPLv2.1
 URL: http://www.moblin.org
-Release: %mkrel 1
+Release: %mkrel 2
 Source0: http://git.moblin.org/cgit.cgi/%{name}/snapshot/%{name}-%{version}.tar.bz2
 Patch0: nbtk-1.1.4-libccss-dependency.patch
 Patch1: nbtk-1.1.4-libccss-fix.patch 
@@ -45,7 +45,7 @@ Documentation for NBTK
 %package -n %{develname}
 
 Summary: NBTK development libraries and headers
-Group: System/Libraries
+Group: Development/C
 
 Requires: %{libname} = %{version}-%{release}
 Requires: %{libname} >= %{version}
