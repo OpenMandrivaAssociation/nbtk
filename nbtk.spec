@@ -69,8 +69,8 @@ NBTK GTK+ support
 
 %prep
 %setup -q -n nbtk-%{version}
-%patch0 -p0
-%patch1 -p1
+%patch0 -p0 -b .dep
+%patch1 -p1 -b .pseudoclass
 
 %build
 ./autogen.sh
