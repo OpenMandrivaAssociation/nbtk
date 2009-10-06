@@ -12,8 +12,8 @@ URL: http://www.moblin.org
 Release: %mkrel 3
 Source0: http://git.moblin.org/cgit.cgi/%{name}/snapshot/%{name}-%{version}.tar.bz2
 Patch0: nbtk-1.1.4-libccss-dependency.patch
-Patch1: nbtk-1.1.4-libccss-fix.patch 
-Patch2: nbtk-1.1.4-libccss-property.patch 
+Patch1: nbtk-1.1.4-libccss-property.patch 
+Patch2: nbtk-1.1.4-libccss-fix.patch 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 BuildRequires: clutter-devel
@@ -71,8 +71,8 @@ NBTK GTK+ support
 %prep
 %setup -q -n nbtk-%{version}
 %patch0 -p0 -b .dep
-%patch1 -p1 -b .pseudoclass
-%patch2 -p1 -b .property
+%patch1 -p1 -b .property
+%patch2 -p1 -b .pseudoclass
 
 %build
 ./autogen.sh
