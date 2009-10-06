@@ -1,5 +1,6 @@
 %define major     0
 %define libname   %mklibname %{name} %{major}
+%define gtklibname   %mklibname %{name}-gtk %{major}
 %define develname %mklibname %{name} -d
 
 Name: nbtk
@@ -54,7 +55,7 @@ Provides: %{name}-devel
 %description -n %{develname} 
 NBTK development libraries and header files
 
-%package -n libnbtk-gtk
+%package -n %{gtklibname}
 
 Summary: NBTK GTK+ support
 Group: System/Libraries
@@ -63,7 +64,7 @@ Requires: %{libname} = %{version}-%{release}
 Requires: pkgconfig
 Requires: %{libname} >= %{version}
 
-%description -n libnbtk-gtk
+%description -n %{gtklibname}
 NBTK GTK+ support
 
 %prep
@@ -116,5 +117,5 @@ rm -rf %{buildroot}
 %{_libdir}/libnbtk-1.2.la
 %{_libdir}/libnbtk-1.2.so
 
-%files -n libnbtk-gtk
+%files -n %{gtklibname}
 %{_libdir}/libnbtk-gtk*.so.%{major}*
