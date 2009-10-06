@@ -9,7 +9,7 @@ Group: System/Libraries
 Version: 1.1.4
 License: LGPLv2.1
 URL: http://www.moblin.org
-Release: %mkrel 2
+Release: %mkrel 3
 Source0: http://git.moblin.org/cgit.cgi/%{name}/snapshot/%{name}-%{version}.tar.bz2
 Patch0: nbtk-1.1.4-libccss-dependency.patch
 Patch1: nbtk-1.1.4-libccss-fix.patch 
