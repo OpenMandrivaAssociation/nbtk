@@ -49,6 +49,7 @@ Summary: NBTK development libraries and headers
 Group: Development/C
 
 Requires: %{libname} = %{version}-%{release}
+Requires: %{gtklibname} = %{version}-%{release}
 Provides: %{name}-devel
 
 %description -n %{develname} 
