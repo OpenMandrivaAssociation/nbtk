@@ -9,7 +9,7 @@ Group: System/Libraries
 Version: 1.1.4
 License: LGPLv2.1
 URL: http://www.moblin.org
-Release: %mkrel 3
+Release: %mkrel 4
 Source0: http://git.moblin.org/cgit.cgi/%{name}/snapshot/%{name}-%{version}.tar.bz2
 Patch0: 01_use_ccss0.5.0.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
@@ -69,6 +69,7 @@ NBTK GTK+ support
 %prep
 %setup -q -n nbtk-%{version}
 %patch0 -p1 -b .ccss050
+perl -pi -e 's,^\$srcdir/configure,/bin/true,' ./autogen.sh
 
 %build
 ./autogen.sh
