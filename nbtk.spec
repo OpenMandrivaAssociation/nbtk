@@ -1,3 +1,17 @@
+%define version 1.1.13
+%define rel 1
+%define snapdate 0
+# 20091029
+
+# they didn't tagged it properly, even misnamed the version
+%define snapshot 4039bcea9729ec9709c93dc6d0076dbd43fde5a5
+
+%if %{snapdate}
+%define release %mkrel 0.%{snapdate}.%{rel}
+%else
+%define release %mkrel %{rel}
+%endif
+
 %define major     0
 %define libname   %mklibname %{name} %{major}
 %define gtklibname   %mklibname %{name}-gtk %{major}
@@ -6,11 +20,11 @@
 Name: nbtk
 Summary: Experimental toolkit for Moblin
 Group: System/Libraries
-Version: 1.1.4
+Version: %{version}
 License: LGPLv2.1
 URL: http://www.moblin.org
-Release: %mkrel 4
-Source0: http://git.moblin.org/cgit.cgi/%{name}/snapshot/%{name}-%{version}.tar.bz2
+Release: %{release}
+Source0: http://git.moblin.org/cgit.cgi/%{name}/snapshot/%{name}-%{snapshot}.tar.gz
 Patch0: 01_use_ccss0.5.0.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -67,7 +81,7 @@ Requires: %{libname} >= %{version}
 NBTK GTK+ support
 
 %prep
-%setup -q -n nbtk-%{version}
+%setup -q -n %{name}-%{snapshot}
 %patch0 -p1 -b .ccss050
 perl -pi -e 's,^\$srcdir/configure,/bin/true,' ./autogen.sh
 
