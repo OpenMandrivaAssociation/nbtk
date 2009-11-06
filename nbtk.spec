@@ -1,4 +1,4 @@
-%define version 1.1.13
+%define version 1.2.0
 %define rel 1
 %define snapdate 0
 # 20091029
@@ -24,7 +24,7 @@ Version: %{version}
 License: LGPLv2.1
 URL: http://www.moblin.org
 Release: %{release}
-Source0: http://git.moblin.org/cgit.cgi/%{name}/snapshot/%{name}-%{snapshot}.tar.gz
+Source0: http://git.moblin.org/cgit.cgi/%{name}/snapshot/%{name}-%{version}.tar.bz2
 Patch0: 01_use_ccss0.5.0.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -81,7 +81,7 @@ Requires: %{libname} >= %{version}
 NBTK GTK+ support
 
 %prep
-%setup -q -n %{name}-%{snapshot}
+%setup -q -n %{name}-%{version}
 %patch0 -p1 -b .ccss050
 perl -pi -e 's,^\$srcdir/configure,/bin/true,' ./autogen.sh
 
