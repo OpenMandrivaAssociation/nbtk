@@ -1,5 +1,5 @@
 %define version 1.2.0
-%define rel 1
+%define rel 2
 %define snapdate 0
 # 20091029
 
@@ -13,6 +13,7 @@
 %endif
 
 %define major     0
+%define api 1.2
 %define libname   %mklibname %{name} %{major}
 %define gtklibname   %mklibname %{name}-gtk %{major}
 %define develname %mklibname %{name} -d
@@ -113,7 +114,8 @@ rm -rf %{buildroot}
 
 %files -n %{libname}
 %defattr(-,root,root,-)
-%{_libdir}/libnbtk-1.2.so.%{major}*
+%{_libdir}/libnbtk-%{api}.so.%{major}*
+%{_libdir}/girepository-1.0/Nbtk-%{api}.typelib
 
 %files -n nbtk-doc
 %defattr(-,root,root,-)
@@ -121,14 +123,14 @@ rm -rf %{buildroot}
 
 %files -n %{develname}
 %defattr(-,root,root,-)
-%{_includedir}/nbtk-1.2/*
+%{_includedir}/nbtk-%{api}/*
 %{_libdir}/pkgconfig/*.pc
 %{_datadir}/gir-1.0/*
-%{_libdir}/girepository-1.0/
-%{_libdir}/libnbtk-gtk-1.2.la
-%{_libdir}/libnbtk-gtk-1.2.so
-%{_libdir}/libnbtk-1.2.la
-%{_libdir}/libnbtk-1.2.so
+%{_libdir}/libnbtk-gtk-%{api}.la
+%{_libdir}/libnbtk-gtk-%{api}.so
+%{_libdir}/libnbtk-%{api}.la
+%{_libdir}/libnbtk-%{api}.so
 
 %files -n %{gtklibname}
 %{_libdir}/libnbtk-gtk*.so.%{major}*
+%{_libdir}/girepository-1.0/NbtkGtk-%{api}.typelib
