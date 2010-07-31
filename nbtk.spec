@@ -1,5 +1,5 @@
 %define version 1.2.0
-%define rel 2
+%define rel 3
 %define snapdate 0
 # 20091029
 
@@ -27,6 +27,8 @@ URL: http://www.moblin.org
 Release: %{release}
 Source0: http://git.moblin.org/cgit.cgi/%{name}/snapshot/%{name}-%{version}.tar.bz2
 Patch0: 01_use_ccss0.5.0.patch
+Patch1: nbtk-1.2.3-gtk.patch
+Patch2: nbtk-1.2.3-types.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 BuildRequires: clutter-devel
@@ -34,7 +36,6 @@ BuildRequires: libccss-devel
 BuildRequires: clutter-imcontext-devel
 BuildRequires: libglib2.0-devel
 BuildRequires: libgtk+2.0-devel
-BuildRequires: gir-repository
 BuildRequires: gtk-doc
 BuildRequires: gobject-introspection-devel
 
@@ -84,6 +85,8 @@ NBTK GTK+ support
 %prep
 %setup -q -n %{name}-%{version}
 %patch0 -p1 -b .ccss050
+%patch1 -p1 -b .gtk
+%patch2 -p1 -b .types
 perl -pi -e 's,^\$srcdir/configure,/bin/true,' ./autogen.sh
 
 %build
