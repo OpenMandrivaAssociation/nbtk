@@ -1,5 +1,5 @@
 %define version 1.2.0
-%define rel 3
+%define rel 4
 %define snapdate 0
 # 20091029
 
