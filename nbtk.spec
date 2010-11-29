@@ -1,5 +1,5 @@
-%define version 1.2.0
-%define rel 4
+%define version 1.2.2
+%define rel 1
 %define snapdate 0
 # 20091029
 
@@ -23,14 +23,14 @@ Summary: Experimental toolkit for Moblin
 Group: System/Libraries
 Version: %{version}
 License: LGPLv2.1
-URL: http://www.moblin.org
+URL: http://www.meego.com
 Release: %{release}
-Source0: http://git.moblin.org/cgit.cgi/%{name}/snapshot/%{name}-%{version}.tar.bz2
+Source0: %{name}-%{version}.tar.gz
 Patch0: 01_use_ccss0.5.0.patch
 Patch1: nbtk-1.2.3-gtk.patch
 Patch2: nbtk-1.2.3-types.patch
+Patch3: nbtk-1.2.2-use-clutter-1.4.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-
 BuildRequires: clutter-devel
 BuildRequires: libccss-devel
 BuildRequires: clutter-imcontext-devel
@@ -87,11 +87,13 @@ NBTK GTK+ support
 %patch0 -p1 -b .ccss050
 %patch1 -p1 -b .gtk
 %patch2 -p1 -b .types
-perl -pi -e 's,^\$srcdir/configure,/bin/true,' ./autogen.sh
+%patch3 -p1 -b .clutter14
 
 %build
-./autogen.sh
-%configure2_5x --enable-gtk-doc
+autoreconf --install
+%configure2_5x \
+  --enable-gtk-doc \
+  --disable-static
 %make
 
 %install
@@ -110,7 +112,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%doc NEWS README HACKING ChangeLog COPYING.LIB AUTHORS
+%doc NEWS README ChangeLog COPYING.LIB AUTHORS
 %{_bindir}/*
 %{_datadir}/locale/*
 %{_datadir}/nbtk/style/*
