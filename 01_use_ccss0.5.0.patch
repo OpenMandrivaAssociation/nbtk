@@ -1,0 +1,216 @@
+diff -ruN nbtk-1.1.13git20091027/configure.ac nbtk-1.1.13git20091027.new/configure.ac
+--- nbtk-1.1.13git20091027/configure.ac	2009-10-27 10:16:20.000000000 -0400
++++ nbtk-1.1.13git20091027.new/configure.ac	2009-10-27 14:05:21.000000000 -0400
+@@ -121,7 +121,7 @@
+ 
+ AM_PROG_LIBTOOL
+ 
+-NBTK_REQUIRES="clutter-1.0 clutter-imcontext-0.1 libccss-1 = 0.3.1"
++NBTK_REQUIRES="clutter-1.0 clutter-imcontext-0.1 ccss-1 >= 0.5.0"
+ PKG_CHECK_MODULES(NBTK, [$NBTK_REQUIRES])
+ PKG_CHECK_MODULES(GTK, [gtk+-2.0])
+ 
+diff -ruN nbtk-1.1.13git20091027/nbtk/nbtk-stylable.c nbtk-1.1.13git20091027.new/nbtk/nbtk-stylable.c
+--- nbtk-1.1.13git20091027/nbtk/nbtk-stylable.c	2009-10-27 10:16:20.000000000 -0400
++++ nbtk-1.1.13git20091027.new/nbtk/nbtk-stylable.c	2009-10-27 14:05:21.000000000 -0400
+@@ -742,8 +742,8 @@
+  *
+  * Return value: the pseudo class name of @stylable
+  */
+-const gchar*
+-nbtk_stylable_get_pseudo_class (NbtkStylable *stylable)
++const gchar**
++nbtk_stylable_get_pseudo_classes (NbtkStylable *stylable)
+ {
+   NbtkStylableIface *iface;
+ 
+@@ -751,11 +751,21 @@
+ 
+   iface = NBTK_STYLABLE_GET_IFACE (stylable);
+ 
+-  if (iface->get_pseudo_class)
+-    return iface->get_pseudo_class (stylable);
++  if (iface->get_pseudo_classes)
++    return iface->get_pseudo_classes (stylable);
+   else
+     return NULL;
+ }
++const gchar*
++nbtk_stylable_get_pseudo_class (NbtkStylable *stylable)
++{
++  const gchar **result=NULL;
++  result = nbtk_stylable_get_pseudo_classes(stylable);
++  if (result && result[0]) {
++    return result[0];
++  }
++  return NULL;
++}
+ 
+ /**
+  * nbtk_stylable_get_attribute:
+diff -ruN nbtk-1.1.13git20091027/nbtk/nbtk-stylable.h nbtk-1.1.13git20091027.new/nbtk/nbtk-stylable.h
+--- nbtk-1.1.13git20091027/nbtk/nbtk-stylable.h	2009-10-27 10:16:20.000000000 -0400
++++ nbtk-1.1.13git20091027.new/nbtk/nbtk-stylable.h	2009-10-27 14:05:21.000000000 -0400
+@@ -58,7 +58,7 @@
+   const gchar  *(*get_style_id)     (NbtkStylable *stylable);
+   const gchar  *(*get_style_type)   (NbtkStylable *stylable);
+   const gchar  *(*get_style_class)  (NbtkStylable *stylable);
+-  const gchar  *(*get_pseudo_class) (NbtkStylable *stylable);
++  const gchar  **(*get_pseudo_classes) (NbtkStylable *stylable);
+   gchar        *(*get_attribute)    (NbtkStylable *stylable,
+                                      const gchar  *name);
+   gboolean      (*get_viewport)     (NbtkStylable *stylable,
+@@ -109,6 +109,7 @@
+ const gchar*  nbtk_stylable_get_style_type    (NbtkStylable *stylable);
+ const gchar*  nbtk_stylable_get_style_class   (NbtkStylable *stylable);
+ const gchar*  nbtk_stylable_get_pseudo_class  (NbtkStylable *stylable);
++const gchar**  nbtk_stylable_get_pseudo_classes  (NbtkStylable *stylable);
+ gchar*        nbtk_stylable_get_attribute     (NbtkStylable *stylable,
+                                                const gchar  *name);
+ gboolean      nbtk_stylable_get_viewport      (NbtkStylable *stylable,
+diff -ruN nbtk-1.1.13git20091027/nbtk/nbtk-style.c nbtk-1.1.13git20091027.new/nbtk/nbtk-style.c
+--- nbtk-1.1.13git20091027/nbtk/nbtk-style.c	2009-10-27 10:16:20.000000000 -0400
++++ nbtk-1.1.13git20091027.new/nbtk/nbtk-style.c	2009-10-27 14:05:21.000000000 -0400
+@@ -433,10 +433,10 @@
+   return nbtk_stylable_get_style_class (node->stylable);
+ }
+ 
+-static const gchar*
+-get_pseudo_class (nbtk_style_node_t *node)
++static const gchar**
++get_pseudo_classes (nbtk_style_node_t *node)
+ {
+-  return nbtk_stylable_get_pseudo_class (node->stylable);
++  return nbtk_stylable_get_pseudo_classes (node->stylable);
+ }
+ 
+ static const gchar*
+@@ -462,7 +462,7 @@
+     .get_id           = (ccss_node_get_id_f) get_style_id,
+     .get_type         = (ccss_node_get_type_f) get_style_type,
+     .get_class        = (ccss_node_get_class_f) get_style_class,
+-    .get_pseudo_class = (ccss_node_get_pseudo_class_f) get_pseudo_class,
++    .get_pseudo_classes = (ccss_node_get_pseudo_classes_f) get_pseudo_classes,
+     .get_viewport     = NULL,// (ccss_node_get_viewport_f) get_viewport,
+     .get_attribute    = (ccss_node_get_attribute_f) get_attribute,
+     .release          = (ccss_node_release_f) release
+@@ -507,7 +507,7 @@
+ 
+           if (ccss_style_get_property (ccss_style,
+                                         "border-image",
+-                                        (ccss_property_base_t const **) &border_image))
++                                        (ccss_property_t const **) &border_image))
+             {
+               if (border_image &&
+                   border_image->base.state == CCSS_PROPERTY_STATE_SET)
+diff -ruN nbtk-1.1.13git20091027/nbtk/nbtk-widget.c nbtk-1.1.13git20091027.new/nbtk/nbtk-widget.c
+--- nbtk-1.1.13git20091027/nbtk/nbtk-widget.c	2009-10-27 10:16:20.000000000 -0400
++++ nbtk-1.1.13git20091027.new/nbtk/nbtk-widget.c	2009-10-27 14:05:21.000000000 -0400
+@@ -53,7 +53,7 @@
+   NbtkPadding padding;
+ 
+   NbtkStyle *style;
+-  gchar *pseudo_class;
++  gchar *pseudo_classes[2];
+   gchar *style_class;
+ 
+   ClutterActor *border_image;
+@@ -162,7 +162,7 @@
+       break;
+ 
+     case PROP_PSEUDO_CLASS:
+-      g_value_set_string (value, priv->pseudo_class);
++      g_value_set_string (value, priv->pseudo_classes[0]);
+       break;
+ 
+     case PROP_STYLE_CLASS:
+@@ -237,7 +237,9 @@
+   NbtkWidgetPrivate *priv = NBTK_WIDGET (gobject)->priv;
+ 
+   g_free (priv->style_class);
+-  g_free (priv->pseudo_class);
++  g_free (priv->pseudo_classes[0]);
++  priv->pseudo_classes[0]=NULL;
++  priv->pseudo_classes[1]=NULL;
+ 
+   clutter_color_free (priv->bg_color);
+ 
+@@ -843,12 +845,12 @@
+   return NBTK_WIDGET (stylable)->priv->style_class;
+ }
+ 
+-static const gchar*
+-nbtk_widget_get_pseudo_class (NbtkStylable *stylable)
++static const gchar**
++nbtk_widget_get_pseudo_classes (NbtkStylable *stylable)
+ {
+   g_return_val_if_fail (NBTK_IS_WIDGET (stylable), NULL);
+ 
+-  return NBTK_WIDGET (stylable)->priv->pseudo_class;
++  return NBTK_WIDGET (stylable)->priv->pseudo_classes;
+ }
+ 
+ static gboolean
+@@ -924,12 +926,22 @@
+  * Returns: the pseudo class string. The string is owned by the #NbtkWidget and
+  * should not be modified or freed.
+  */
+-const gchar*
+-nbtk_widget_get_style_pseudo_class (NbtkWidget *actor)
++const gchar**
++nbtk_widget_get_style_pseudo_classes (NbtkWidget *actor)
+ {
+   g_return_val_if_fail (NBTK_IS_WIDGET (actor), NULL);
+ 
+-  return actor->priv->pseudo_class;
++  return actor->priv->pseudo_classes;
++}
++const gchar*
++nbtk_widget_get_style_pseudo_class (NbtkWidget *actor)
++{
++  const gchar** result=NULL;
++  result = nbtk_widget_get_style_pseudo_classes(actor);
++  if (result && result[0]) {
++    return result[0];
++  }
++  return NULL;
+ }
+ 
+ /**
+@@ -949,10 +961,11 @@
+ 
+   priv = actor->priv;
+ 
+-  if (g_strcmp0 (pseudo_class, priv->pseudo_class))
++  priv->pseudo_classes[1] = NULL;
++  if (g_strcmp0 (pseudo_class, priv->pseudo_classes[0]))
+     {
+-      g_free (priv->pseudo_class);
+-      priv->pseudo_class = g_strdup (pseudo_class);
++      g_free (priv->pseudo_classes[0]);
++      priv->pseudo_classes[0] = g_strdup (pseudo_class);
+ 
+       nbtk_stylable_changed ((NbtkStylable*) actor);
+ 
+@@ -1033,8 +1046,8 @@
+       iface->get_container = nbtk_widget_get_container;
+       iface->get_style_id = nbtk_widget_get_style_id;
+       iface->get_style_type = nbtk_widget_get_style_type;
+-      iface->get_style_class = nbtk_widget_get_style_class;
+-      iface->get_pseudo_class = nbtk_widget_get_pseudo_class;
++      iface->get_style_class = nbtk_widget_get_style_class;
++      iface->get_pseudo_classes = nbtk_widget_get_pseudo_classes;
+       /* iface->get_attribute = nbtk_widget_get_attribute; */
+       iface->get_viewport = nbtk_widget_get_viewport;
+     }
+diff -ruN nbtk-1.1.13git20091027/nbtk/nbtk-widget.h nbtk-1.1.13git20091027.new/nbtk/nbtk-widget.h
+--- nbtk-1.1.13git20091027/nbtk/nbtk-widget.h	2009-10-27 10:16:20.000000000 -0400
++++ nbtk-1.1.13git20091027.new/nbtk/nbtk-widget.h	2009-10-27 14:05:21.000000000 -0400
+@@ -79,6 +79,7 @@
+ void                  nbtk_widget_set_style_pseudo_class (NbtkWidget   *actor,
+                                                           const gchar  *pseudo_class);
+ G_CONST_RETURN gchar *nbtk_widget_get_style_pseudo_class (NbtkWidget   *actor);
++G_CONST_RETURN gchar **nbtk_widget_get_style_pseudo_classes (NbtkWidget   *actor);
+ void                  nbtk_widget_set_style_class_name   (NbtkWidget   *actor,
+                                                           const gchar  *style_class);
+ G_CONST_RETURN gchar *nbtk_widget_get_style_class_name   (NbtkWidget   *actor);

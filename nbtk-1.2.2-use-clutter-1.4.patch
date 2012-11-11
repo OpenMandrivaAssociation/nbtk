@@ -1,0 +1,32 @@
+diff -rud nbtk-1.2.2-orig//nbtk/Makefile.am nbtk-1.2.2/nbtk/Makefile.am
+--- nbtk-1.2.2-orig//nbtk/Makefile.am	2009-09-17 13:47:53.000000000 -0300
++++ nbtk-1.2.2/nbtk/Makefile.am	2010-11-29 16:40:51.000000000 -0200
+@@ -184,7 +184,7 @@
+ libnbtk_@NBTK_API_VERSION@_la_CFLAGS =	\
+ 	$(common_includes)		\
+ 	-DG_LOG_DOMAIN=\"Nbtk\"		\
+-	-DCLUTTER_DISABLE_DEPRECATED	\
++	-UCLUTTER_DISABLE_DEPRECATED	\
+ 	$(NBTK_MAINTAINER_CFLAGS)	\
+ 	$(NBTK_DEBUG_CFLAGS)		\
+ 	$(NBTK_CFLAGS)			\
+@@ -247,7 +247,7 @@
+ 		--libtool="$(top_builddir)/libtool" \
+ 		--pkg gobject-2.0 \
+ 		--pkg clutter-1.0 \
+-		--pkg libccss-1 \
++		--pkg ccss-1 \
+ 		--output $@ \
+ 		$(source_h) \
+ 		$(top_srcdir)/nbtk/nbtk.h \
+@@ -268,7 +268,7 @@
+ 		--libtool="$(top_builddir)/libtool" \
+ 		--pkg gobject-2.0 \
+ 		--pkg gtk+-2.0 \
+-		--pkg libccss-1 \
++		--pkg ccss-1 \
+ 		--output $@ \
+ 		$(source_gtk_h) \
+ 		$(top_srcdir)/nbtk/nbtk-gtk.h \
+Only in nbtk-1.2.2/nbtk: Makefile.am.clutter14
+Only in nbtk-1.2.2/nbtk: Makefile.am~
