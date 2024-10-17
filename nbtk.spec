@@ -23,7 +23,7 @@ Summary: Experimental toolkit for Moblin
 Group: System/Libraries
 Version: %{version}
 License: LGPLv2.1
-URL: http://www.meego.com
+URL: https://www.meego.com
 Release: %{release}
 Source0: %{name}-%{version}.tar.gz
 Patch0: 01_use_ccss0.5.0.patch
